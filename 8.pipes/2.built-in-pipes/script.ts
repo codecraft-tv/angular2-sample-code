@@ -36,13 +36,12 @@ import {Observable} from 'rxjs/Rx';
 <div class="card card-block">
   <div class="card-text">
     <h4 class="card-title">DecimalPipe</h4>
-    <p ngNonBindable>{{ decimalVal | number: '3.1-2' }}</p>
-    <p>{{ decimalVal | number: '3.1-2' }}</p>
+    <p ngNonBindable>{{ 3.14159265 | number: '3.1-2' }}</p>
+    <p>{{ 3.14159265 | number: '3.1-2' }}</p>
 
-    <p ngNonBindable>{{ decimalVal | number: '1.4-4' }}</p>
-    <p>{{ decimalVal | number: '1.4-4' }}</p>
+    <p ngNonBindable>{{ 3.14159265 | number: '1.4-4' }}</p>
+    <p>{{ 3.14159265 | number: '1.4-4' }}</p>
   </div>
-
 </div>
 
 <div class="card card-block">
@@ -119,13 +118,7 @@ import {Observable} from 'rxjs/Rx';
 })
 class PipeBuiltinsComponent {
   private dateVal: Date = new Date();
-  private decimalVal: number = Math.PI;
-  private jsonVal: Object = {
-    moo: 'foo',
-    goo: {
-      too: 'new'
-    }
-  };
+  private jsonVal: Object = {moo: 'foo', goo: {too: 'new'}};
 
 }
 

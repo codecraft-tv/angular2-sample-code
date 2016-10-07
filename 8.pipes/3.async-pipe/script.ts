@@ -1,4 +1,4 @@
-import {NgModule, Component, Pipe} from '@angular/core';
+import {NgModule, Component, Pipe, OnDestroy} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {Observable} from 'rxjs/Rx';
@@ -21,9 +21,10 @@ import {Observable} from 'rxjs/Rx';
  </div> 
   `
 })
-class AsyncPipeComponent {
+class AsyncPipeComponent implements OnDestroy {
   promise: Promise<string>;
   observable: Observable<number>;
+  subscription: Object = null;
   observableData: number;
 
   constructor() {
@@ -40,8 +41,9 @@ class AsyncPipeComponent {
         .map((v) => v * v);
   }
 
+  // AsyncPipe subscribes to the observable automatically
   subscribeObservable() {
-    this.getObservable()
+    this.subscription = this.getObservable()
         .subscribe((v) => this.observableData = v);
   }
 
@@ -49,6 +51,13 @@ class AsyncPipeComponent {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve("Promise complete!"), 3000);
     });
+  }
+
+  // AsyncPipe unsubscribes from the observable automatically
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
 
