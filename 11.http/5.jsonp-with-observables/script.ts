@@ -1,7 +1,7 @@
 import {NgModule, Component, Injectable} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {HttpModule, Http, Response} from '@angular/http';
+import {JsonpModule, Jsonp, Response} from '@angular/http';
 import {ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -23,12 +23,12 @@ class SearchItem {
 export class SearchService {
   apiRoot: string = 'https://itunes.apple.com/search';
 
-  constructor(private http: Http) {
+  constructor(private jsonp: Jsonp) {
   }
 
-  search(term: string): Observable<SearchItem[]> {
-    let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
-    return this.http.get(apiURL)
+  search(term: string) {
+    let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20&callback=JSONP_CALLBACK`;
+    return this.jsonp.request(apiURL)
         .map(res => {
           return res.json().results.map(item => {
             return new SearchItem(
@@ -98,7 +98,7 @@ class AppComponent {
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpModule
+    JsonpModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
