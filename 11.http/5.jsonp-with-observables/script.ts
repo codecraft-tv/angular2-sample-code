@@ -87,10 +87,6 @@ class AppComponent {
         .switchMap(term => this.itunes.search(term))
         .do(_ => this.loading = false)
   }
-
-  doSearch(term: string) {
-    this.itunes.search(term)
-  }
 }
 
 @NgModule({
