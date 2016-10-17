@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {JsonpModule, Jsonp, Response} from '@angular/http';
 import {ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
+import {Routes, RouterModule} from "@angular/router";
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 
@@ -98,14 +99,14 @@ class SearchComponent {
 }
 
 @Component({
-  selector: 'app-landing',
+  selector: 'app-home',
   template: `
 <div class="jumbotron">
   <h1 class="display-3">iTunes Search App</h1>
 </div>
  `
 })
-class LandingComponent {
+class HomeComponent {
 }
 
 @Component({
@@ -132,24 +133,34 @@ class HeaderComponent {
   template: `
 	<app-header></app-header>
 	<div class="m-t-1">
-    <app-search></app-search>
+    <router-outlet></router-outlet>
   </div>
  `
 })
 class AppComponent {
 }
 
+const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'find', redirectTo: 'search'},
+  {path: 'home', component: HomeComponent},
+  {path: 'search', component: SearchComponent},
+  {path: '**', component: HomeComponent}
+];
+
+
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    JsonpModule
+    JsonpModule,
+    RouterModule.forRoot(routes, {useHash: true})
   ],
   declarations: [
     AppComponent,
     SearchComponent,
-    LandingComponent,
+    HomeComponent,
     HeaderComponent
   ],
   bootstrap: [AppComponent],
