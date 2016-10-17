@@ -159,39 +159,109 @@ class HeaderComponent {
 }
 
 @Component({
-  selector: 'app-artist-album-list',
-  template: `
-<h1>Artist Album Listing</h1>
- `
-})
-class ArtistAlbumListComponent {
-}
-
-@Component({
   selector: 'app-artist-track-list',
   template: `
-<h1>Artist Track Listing</h1>
+<ul class="list-group">
+	<li class="list-group-item"
+	    *ngFor="let track of tracks">
+		<img src="{{track.artworkUrl30}}">
+		<a target="_blank"
+		   href="{{track.trackViewUrl}}">{{ track.trackName }}
+		</a>
+	</li>
+</ul>
  `
 })
 class ArtistTrackListComponent {
-	constructor(private route: ActivatedRoute) {
-		this.route.parent.params.subscribe(params => console.log(params));
-	}
+  private tracks: any[];
+
+  constructor(private jsonp: Jsonp,
+              private route: ActivatedRoute) {
+    this.route.parent.params.subscribe(params => {
+      this.jsonp.request(`https://itunes.apple.com/lookup?id=${params['artistId']}&entity=song&callback=JSONP_CALLBACK`)
+          .toPromise()
+          .then(res => {
+            console.log(res.json());
+            this.tracks = res.json().results.slice(1);
+          });
+    });
+  }
+}
+
+@Component({
+  selector: 'app-artist-album-list',
+  template: `<ul class="list-group">
+	<li class="list-group-item"
+	    *ngFor="let album of albums">
+		<img src="{{album.artworkUrl60}}">
+		<a target="_blank"
+		   href="{{album.collectionViewUrl}}">{{ album.collectionName }}
+		</a>
+	</li>
+</ul>
+ `
+})
+class ArtistAlbumListComponent {
+  private albums: any[];
+
+  constructor(private jsonp: Jsonp,
+              private route: ActivatedRoute) {
+    this.route.parent.params.subscribe(params => {
+      this.jsonp.request(`https://itunes.apple.com/lookup?id=${params['artistId']}&entity=album&callback=JSONP_CALLBACK`)
+          .toPromise()
+          .then(res => {
+            console.log(res.json());
+            this.albums = res.json().results.slice(1);
+          });
+    });
+  }
 }
 
 @Component({
   selector: 'app-artist',
-  template: `
-<h1>Artist</h1>
-<p>
-	<a [routerLink]="['./tracks']">Tracks</a> |
-	<a [routerLink]="['./albums']">Albums</a>
-</p>
+  template: `<div class="card">
+  <div class="card-block">
+    <h4>{{artist?.artistName}} <span class="tag tag-default">{{artist?.primaryGenreName}}</span></h4>
+    <hr />
+    <footer>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLinkActive]="['active']"
+             [routerLink]="['./tracks']">Tracks
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLinkActive]="['active']"
+             [routerLink]="['./albums']">Albums
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </div>
+</div>
 
-<router-outlet></router-outlet>
+<div class="m-t-1">
+  <router-outlet></router-outlet>
+</div>
  `
 })
 class ArtistComponent {
+  private artist: any;
+
+  constructor(private jsonp: Jsonp,
+              private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.jsonp.request(`https://itunes.apple.com/lookup?id=${params['artistId']}&callback=JSONP_CALLBACK`)
+          .toPromise()
+          .then(res => {
+            console.log(res.json());
+            this.artist = res.json().results[0];
+            console.log(this.artist);
+          });
+    });
+  }
 }
 
 @Component({
@@ -207,12 +277,20 @@ class AppComponent {
 }
 
 const routes: Routes = [
-	{path: '', redirectTo: 'home', pathMatch: 'full'},
-	{path: 'find', redirectTo: 'search'},
-	{path: 'home', component: HomeComponent},
-	{path: 'search', component: SearchComponent},
-	{path: 'artist/:artistId', component: ArtistComponent},
-	{path: '**', component: HomeComponent}
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'find', redirectTo: 'search'},
+  {path: 'home', component: HomeComponent},
+  {path: 'search', component: SearchComponent},
+  {
+    path: 'artist/:artistId',
+    component: ArtistComponent,
+    children: [
+      {path: '', redirectTo: 'tracks'},
+      {path: 'tracks', component: ArtistTrackListComponent},
+      {path: 'albums', component: ArtistAlbumListComponent},
+    ]
+  },
+  {path: '**', component: HomeComponent}
 ];
 
 
@@ -230,7 +308,7 @@ const routes: Routes = [
     HomeComponent,
     HeaderComponent,
     ArtistAlbumListComponent,
-    ArtistAlbumListComponent,
+    ArtistTrackListComponent,
     ArtistComponent
   ],
   bootstrap: [AppComponent],
