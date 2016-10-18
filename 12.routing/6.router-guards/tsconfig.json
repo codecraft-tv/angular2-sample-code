@@ -8,11 +8,6 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "types": []
-  },
-  "exclude": [
-    "node_modules/*",
-    "**/*-aot.ts"
-  ]
+    "suppressImplicitAnyIndexErrors": true
+  }
 }
