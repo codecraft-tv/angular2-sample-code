@@ -3,7 +3,7 @@ describe('Hello world', () => {
   let expected = "";
 
   beforeEach(() => {
-    expected = "Hello world";
+    expected = "Hello world!";
   });
 
   afterEach(() => {
