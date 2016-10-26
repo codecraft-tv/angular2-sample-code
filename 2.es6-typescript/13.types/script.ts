@@ -10,27 +10,28 @@ let list2: Array<number> = [1, 2, 3];
 // Function
 let fun: Function = () => console.log("Hello");
 function returnNumber(): number {
-	return 1;
+  return 1;
 }
 
 // Void
 function returnNothing(): void {
-	console.log("Moo");
+  console.log("Moo");
 }
 
 // Enum
 enum Direction {
-    Up,
-    Down,
-    Left,
-    Right
+  Up,
+  Down,
+  Left,
+  Right
 }
 let go: Direction;
 go = Direction.Up;
 
 
 // Class
-class Person {}
+class Person {
+}
 let person: Person;
 let people: Person[];
 
@@ -44,11 +45,13 @@ let length: number = (<string>value).length;
 
 
 // Generics
-class Audio {}
-class Video {}
+class Audio {
+}
+class Video {
+}
 
 class Post<T> {
-    content: T;
+  content: T;
 }
 
 let audioPost: Post<Audio>;

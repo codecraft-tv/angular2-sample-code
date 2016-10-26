@@ -1,13 +1,13 @@
 'use strict';
 
-let array = [1, 2, 3];
+let array = [10, 20, 30];
 
 console.log('for-of');
-for (let value in array) {
-  console.log(typeof(value));
+for (let index in array) {
+  console.log(typeof(index));
 }
 
 console.log('for-in');
-for (var value of array) {
+for (let value of array) {
   console.log(value);
 }

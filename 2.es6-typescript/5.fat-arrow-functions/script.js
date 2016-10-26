@@ -6,7 +6,7 @@ setTimeout(() => {
 
 setTimeout(() => console.log("setTimeout called!"), 1000);
 
-var add = (a,b) => a + b;
+let add = (a,b) => a + b;
 console.log(add(1,2));
 
 let obj = {

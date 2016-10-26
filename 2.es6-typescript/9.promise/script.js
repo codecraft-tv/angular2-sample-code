@@ -29,8 +29,8 @@ function doAsyncTask() {
 }
 
 doAsyncTask().then(
-  (val) => console.log(val),
-  (err) => console.error(err)
+    (val) => console.log(val),
+    (err) => console.error(err)
 );
 
 // Immediately Resolved Promise
@@ -39,6 +39,6 @@ promise.then((val) => console.log(val)); // 'done'
 
 // Handling Errors
 Promise.resolve('done')
-  .then((val) => {throw new Error("fail")})
-  .then((val) => console.log(val))
-  .catch((err) => console.error(err));
+    .then((val) => {throw new Error("fail")})
+    .then((val) => console.log(val))
+    .catch((err) => console.error(err));

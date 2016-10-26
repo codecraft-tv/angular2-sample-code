@@ -1,3 +1,3 @@
-import square, {cow} from './module1';
+import square, {cow} from './utils';
 console.log(square(4));
 cow();
