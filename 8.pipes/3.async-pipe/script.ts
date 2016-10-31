@@ -1,7 +1,7 @@
-import {NgModule, Component, Pipe, OnDestroy} from '@angular/core';
+import {NgModule, Component, OnDestroy} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 
 @Component({

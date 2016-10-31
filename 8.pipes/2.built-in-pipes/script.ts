@@ -1,7 +1,6 @@
-import {NgModule, Component, Pipe} from '@angular/core';
+import {NgModule, Component} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'pipe-builtins',
@@ -59,8 +58,8 @@ import {Observable} from 'rxjs/Rx';
 <div class="card card-block">
   <h4 class="card-title">LowerCasePipe</h4>
   <div class="card-text">
-    <p ngNonBindable>{{ 'asim' | uppercase }}</p>
-    <p>{{ 'asim' | uppercase }}</p>
+    <p ngNonBindable>{{ 'ASIM' | lowercase }}</p>
+    <p>{{ 'ASIM' | lowercase }}</p>
   </div>
 </div>
 
@@ -129,8 +128,6 @@ class PipeBuiltinsComponent {
  `
 })
 class AppComponent {
-  imageUrl: string = "";
-
 }
 
 

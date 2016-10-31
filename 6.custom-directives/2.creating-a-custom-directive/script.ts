@@ -47,9 +47,9 @@ class CardHoverDirective {
   <h4 class="card-title">{{data.setup}}</h4>
   <p class="card-text"
      [hidden]="data.hide">{{data.punchline}}</p>
-  <a (click)="data.toggle()"
-     class="btn btn-warning">Tell Me
-  </a>
+  <button (click)="data.toggle()"
+     class="btn btn-primary">Tell Me
+  </button>
 </div>
   `
 })

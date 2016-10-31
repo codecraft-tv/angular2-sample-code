@@ -5,11 +5,12 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 @Component({
   selector: 'ngfor-example',
-  template: `
- <h4>NgFor</h4>
- <ul *ngFor="let person of people; let i = index">
-  <li>{{ i + 1 }} - {{ person.name }}</li>
- </ul>
+  template: `<h4>NgFor</h4>
+<ul>
+  <li *ngFor="let person of people; let i = index">
+    {{ i + 1 }} - {{ person.name }}
+  </li>
+</ul>
  `
 })
 class NgForExampleComponent {
@@ -35,14 +36,15 @@ class NgForExampleComponent {
 
 @Component({
   selector: 'ngfor-grouped-example',
-  template: `
- <h4>NgFor (grouped)</h4>
- <ul *ngFor="let group of peopleByCountry">
-   <li>{{ group.country }}</li>
-   <ul *ngFor="let person of group.people">
-    <li>{{ person.name }}</li>
-   </ul>
- </ul>
+  template: `<h4>NgFor (grouped)</h4>
+<ul *ngFor="let group of peopleByCountry">
+  <li>{{ group.country }}</li>
+  <ul>
+    <li *ngFor="let person of group.people">
+      {{ person.name }}
+    </li>
+  </ul>
+</ul>
  `
 })
 class NgForGroupedExampleComponent {
