@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import {
     ReactiveFormsModule,
-    FormsModule,
-    FormGroup,
     FormControl
 } from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -52,7 +50,6 @@ class AppComponent {
 @NgModule({
   imports: [
     BrowserModule,
-    FormsModule,
     ReactiveFormsModule
   ],
   declarations: [
