@@ -15,6 +15,9 @@ import {
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
+
+// Basic hardcoded validator function
+//
 function emailDomainValidator(control: FormControl) {
   let email = control.value;
   if (email && email.indexOf("@") != -1) {
@@ -28,6 +31,28 @@ function emailDomainValidator(control: FormControl) {
     }
   }
   return null;
+}
+
+// Configurable validator function
+//
+class CodeCraftValidators {
+  static emailDomain(requiredDomain) {
+    return function (control: FormControl) {
+      let email = control.value;
+      if (email && email.indexOf("@") != -1) {
+        let [_, domain] = email.split("@");
+        if (domain !== requiredDomain) {
+          return {
+            emailDomain: {
+              parsedDomain: domain,
+              requiredDomain: requiredDomain
+            }
+          }
+        }
+      }
+      return null;
+    }
+  }
 }
 
 @Component({
@@ -85,7 +110,8 @@ function emailDomainValidator(control: FormControl) {
          *ngIf="email.errors && (email.dirty || email.touched)">
       <p *ngIf="email.errors.required">Email is required</p>
       <p *ngIf="password.errors.pattern">The email address must contain at least the @ character</p>
-      <p *ngIf="email.errors.emailDomain">Email must be on the codecraft.tv domain</p>
+      <!--<p *ngIf="email.errors.emailDomain">Email must be on the codecraft.tv domain</p>-->
+      <p *ngIf="email.errors.emailDomain">Email must be on the {{ email.errors.emailDomain.requiredDomain }} domain</p>
     </div>
 
   </div>
@@ -150,7 +176,7 @@ class ModelFormComponent implements OnInit {
     this.email = new FormControl('', [
       Validators.required,
       Validators.pattern("[^ @]*@[^ @]*"),
-      emailDomainValidator
+      CodeCraftValidators.emailDomain('codecraft.tv')
     ]);
     this.password = new FormControl('', [
       Validators.required,

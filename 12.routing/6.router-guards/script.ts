@@ -305,8 +305,7 @@ class AppComponent {
 
 // Guards
 
-@Injectable()
-export class AlwaysAuthGuard implements CanActivate {
+class AlwaysAuthGuard implements CanActivate {
   canActivate() {
     console.log("AlwaysAuthGuard");
     return true;
@@ -314,8 +313,9 @@ export class AlwaysAuthGuard implements CanActivate {
 }
 
 @Injectable()
-export class OnlyLoggedInUsersGuard implements CanActivate {
-  constructor(private userService: UserService) {};
+class OnlyLoggedInUsersGuard implements CanActivate {
+  constructor(private userService: UserService) {
+  };
 
   canActivate() {
     console.log("OnlyLoggedInUsers");
@@ -329,17 +329,14 @@ export class OnlyLoggedInUsersGuard implements CanActivate {
 }
 
 
-@Injectable()
-export class AlwaysAuthChildrenGuard implements CanActivateChild {
+class AlwaysAuthChildrenGuard implements CanActivateChild {
   canActivateChild() {
     console.log("AlwaysAuthChildrenGuard");
     return true;
   }
 }
 
-
-@Injectable()
-export class UnsearchedTermGuard implements CanDeactivate<SearchComponent> {
+class UnsearchedTermGuard implements CanDeactivate<SearchComponent> {
   canDeactivate(component: SearchComponent,
                 route: ActivatedRouteSnapshot,
                 state: RouterStateSnapshot): boolean {

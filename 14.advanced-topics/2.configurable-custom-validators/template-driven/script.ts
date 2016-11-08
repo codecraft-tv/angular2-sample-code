@@ -27,6 +27,8 @@ class Signup {
   }
 }
 
+// Basic hardcoded validator function
+//
 function emailDomainValidator(control: FormControl) {
   let email = control.value;
   if (email && email.indexOf("@") != -1) {
@@ -42,17 +44,96 @@ function emailDomainValidator(control: FormControl) {
   return null;
 }
 
+// Configurable validator function
+//
+class CodeCraftValidators {
+  static emailDomain(requiredDomain) {
+    return function (control: FormControl) {
+      let email = control.value;
+      if (email && email.indexOf("@") != -1) {
+        let [_, domain] = email.split("@");
+        if (domain !== requiredDomain) {
+          return {
+            emailDomain: {
+              parsedDomain: domain,
+              requiredDomain: requiredDomain
+            }
+          }
+        }
+      }
+      return null;
+    }
+  }
+}
+
+// Basic hardcoded directive
+//
+// @Directive({
+//   selector: '[emailDomain][ngModel]',
+//   providers: [
+//     {
+//       provide: NG_VALIDATORS,
+//       useValue: emailDomainValidator,
+//       multi: true
+//     }
+//   ]
+// })
+// class EmailDomainValidator {
+// }
+
+
+// Directive configured via DI
+//
+// @Directive({
+//   selector: '[emailDomain][ngModel]',
+//   providers: [
+//     {
+//       provide: NG_VALIDATORS,
+//       useClass: EmailDomainValidator,
+//       multi: true
+//     }
+//   ]
+// })
+// class EmailDomainValidator {
+//
+//   private valFn = ValidatorFn;
+//
+//   constructor(@Inject('RequiredDomain') requiredDomain: string) {
+//     this.valFn = CodeCraftValidators.emailDomain(requiredDomain)
+//   }
+//
+//   validate(control: FormControl) {
+//     return this.valFn(control);
+//   }
+// }
+
+// Directive configured via input property binding
+//
 @Directive({
   selector: '[emailDomain][ngModel]',
   providers: [
     {
       provide: NG_VALIDATORS,
-      useValue: emailDomainValidator,
+      useExisting: EmailDomainValidator,
       multi: true
     }
   ]
 })
 class EmailDomainValidator {
+  @Input('emailDomain') emailDomain: string;
+  private valFn = Validators.nullValidator;
+
+  ngOnChanges(): void {
+    if (this.emailDomain) {
+      this.valFn = CodeCraftValidators.emailDomain(this.emailDomain)
+    } else {
+      this.valFn = Validators.nullValidator;
+    }
+  }
+
+  validate(control: FormControl) {
+    return this.valFn(control);
+  }
 }
 
 
@@ -206,6 +287,9 @@ class AppComponent {
   ],
   bootstrap: [
     AppComponent
+  ],
+  providers: [
+    {provide: 'RequiredDomain', useValue: 'example.com'}
   ]
 })
 class AppModule {

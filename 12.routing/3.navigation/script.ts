@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {JsonpModule, Jsonp, Response} from '@angular/http';
 import {ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
-import {Routes, RouterModule} from "@angular/router";
+import {Routes, RouterModule, Router} from "@angular/router";
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 

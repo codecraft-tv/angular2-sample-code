@@ -1,0 +1,12 @@
+@Directive({
+  selector: '[emailDomain][ngModel]',
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useValue: emailDomainValidator,
+      multi: true
+    }
+  ]
+})
+class EmailDomainValidator {
+}
