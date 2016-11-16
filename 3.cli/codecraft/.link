@@ -1,0 +1,17 @@
+
+<--- Last few GCs --->
+
+   97425 ms: Mark-sweep 773.9 (1085.2) -> 769.7 (1087.6) MB, 42.4 / 0 ms [allocation failure] [GC in old space requested].
+   97460 ms: Mark-sweep 769.7 (1087.6) -> 769.6 (1085.6) MB, 34.2 / 0 ms [allocation failure] [GC in old space requested].
+   97501 ms: Mark-sweep 769.6 (1085.6) -> 769.4 (1079.6) MB, 41.4 / 0 ms [last resort gc].
+   97541 ms: Mark-sweep 769.4 (1079.6) -> 769.2 (1072.6) MB, 40.3 / 0 ms [last resort gc].
+
+
+<--- JS stacktrace --->
+
+==== JS stack trace =========================================
+
+Security context: 0xbb1cebc9e31 <JS Object>
+    1: _writeGeneric [net.js:689] [pc=0x194bc00bac9] (this=0x3abd09dbcb69 <a Socket with map 0x2eb042ca7631>,writev=0xbb1ceb04231 <true>,data=0x3abd09dc0811 <JS Array[2]>,encoding=0xbb1ceb042e1 <String[0]: >,cb=0x1ac8147a8d41 <JS Function WritableState.onwrite (SharedFunctionInfo 0x4c7193bc789)>)
+    2: /* anonymous */ [net.js:662] [pc=0x194bc00d188] (this=0x3abd09dbcb69 <a Socket with map 0x2eb...
+
