@@ -6,7 +6,14 @@ import {BrowserModule} from '@angular/platform-browser';
   name: "clean"
 })
 class CleanPipe {
-  //TODO: Add a transform function here...
+  transform(value: string, badWords: string): string {
+    let badWordsList = badWords.split(',').map((item) => item.trim());
+    console.log(badWordsList);
+    for (let badWord of badWordsList) {
+      value = value.replace(badWord, "$%#@!")
+    }
+    return value;
+  }
 }
 
 class Joke {
