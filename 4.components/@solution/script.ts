@@ -2,20 +2,23 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {
     Component,
     NgModule,
+    Input,
     AfterContentInit,
+    ContentChildren,
+    QueryList
 } from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 @Component({
   selector: 'carousel-item',
   template: `
-<div class="carousel-item text-center">
+<div class="carousel-item text-center" [hidden]="!isActive">
    <ng-content></ng-content>
 </div>
 `
 })
 class CarouselItemComponent {
-  //TODO: Show the content in this carousel
+  isActive: boolean = false;
 }
 
 @Component({
@@ -28,26 +31,36 @@ class CarouselItemComponent {
 `
 })
 class CarouselComponent implements AfterContentInit {
+  @ContentChildren(CarouselItemComponent) carouselItemsList: QueryList<CarouselItemComponent>;
+
+  @Input() delay: number = 500;
 
   ngAfterContentInit() {
-    //TODO: maybe use the setInterval function to call a function every x milliseconds?
+    let carouselItems = this.carouselItemsList.toArray();
+    let count: number = 0;
+    let max = carouselItems.length;
+    setInterval(() => {
+      let i = count % max;
+      carouselItems.forEach((item) => item.isActive = false);
+      carouselItems[i].isActive = true;
+      count += 1;
+    }, this.delay)
   }
 }
 
 
-//TODO: Take a look at the markup below to see how you might implement this?
 @Component({
   selector: 'app',
   template: `
 <carousel [delay]="2000">
   <carousel-item>
-    <img src="https://unsplash.it/200" alt="">
+    <img src="https://unsplash.it/200?image=0" alt="">
   </carousel-item>
   <carousel-item>
-    <img src="https://unsplash.it/200" alt="">
+    <img src="https://unsplash.it/200?image=100" alt="">
   </carousel-item>
   <carousel-item>
-    <img src="https://unsplash.it/200" alt="">
+    <img src="https://unsplash.it/200?image=200" alt="">
   </carousel-item>
 </carousel>
 `

@@ -64,20 +64,26 @@ class JokeFormComponent {
   <a (click)="data.toggle()"
      class="btn btn-warning">Tell Me
   </a>
-  <a class="btn btn-danger">Delete
+  <a (click)="deleteItem()"
+     class="btn btn-danger">Delete
   </a>  
 </div>
   `
 })
 class JokeComponent {
   @Input('joke') data: Joke;
+  @Output() jokeDeleted = new EventEmitter<Joke>();
+
+  deleteItem() {
+    this.jokeDeleted.emit(this.data);
+  }
 }
 
 @Component({
   selector: 'joke-list',
   template: `
 <joke-form (jokeCreated)="addJoke($event)"></joke-form>
-<joke *ngFor="let j of jokes" [joke]="j"></joke>
+<joke *ngFor="let j of jokes" [joke]="j" (jokeDeleted)="deleteJoke($event)"></joke>
   `
 })
 class JokeListComponent {
@@ -95,9 +101,6 @@ class JokeListComponent {
     this.jokes.unshift(joke);
   }
 
-  /*
-  TODO: Flesh out the below function to actually delete a joke from the list. Have the function called when the user clicks the delete button.
-  */
   deleteJoke(joke) {
     let indexToDelete = this.jokes.indexOf(joke);
     if (indexToDelete !== -1) {

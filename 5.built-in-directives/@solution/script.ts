@@ -17,17 +17,23 @@ class Article {
 
 @Component({
   selector: 'recent-articles',
-  template: `<div class="col-md-4">
-  <div class="card card-outline-primary">
+  template: `<div class="col-md-4"
+     *ngFor="let article of articles">
+  <div class="card" [ngClass]="{
+    'card-outline-primary': article.kind == 'text',
+    'card-outline-danger': article.kind == 'image'
+  }">
     <div class="card-block">
-      <h4 class="card-title">Title</h4>
-      <p class="card-text">Content</p>
+      <h4 class="card-title">{{ article.title }}</h4>
+      <p class="card-text"
+         *ngIf="article.kind == 'text'">{{ article.content }}</p>
       <p class="card-text">
-        <small class="text-muted">Something</small>
+        <small class="text-muted">Last updated {{ article.date | date:"shortDate" }}</small>
       </p>
     </div>
     <img class="card-img-bottom img-fluid"
-         src="https://unsplash.it/400?image=11">
+         *ngIf="article.kind == 'image'"
+         src="{{ article.content }}">
   </div>
 </div>
 
