@@ -1,7 +1,7 @@
 import {NgModule, Component, Injectable} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {HttpModule, Http, Response} from '@angular/http';
+import {JsonpModule, Jsonp, Response} from '@angular/http';
 import 'rxjs/Rx';
 
 class SearchItem {
@@ -20,15 +20,15 @@ export class SearchService {
   results: SearchItem[];
   loading: boolean;
 
-  constructor(private http: Http) {
+  constructor(private jsonp: Jsonp) {
     this.results = [];
     this.loading = false;
   }
 
   search(term: string) {
     let promise = new Promise((resolve, reject) => {
-      let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
-      this.http.get(apiURL)
+      let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20&callback=JSONP_CALLBACK`;
+      this.jsonp.request(apiURL)
           .toPromise()
           .then(
               res => { // Success
@@ -99,7 +99,7 @@ class AppComponent {
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule,
+    JsonpModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
