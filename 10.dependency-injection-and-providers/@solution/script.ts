@@ -5,10 +5,12 @@ import {
     Input,
     Output,
     EventEmitter,
-    Inject
+    Inject,
+    OpaqueToken
 } from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
+const MAX_JOKES_TOKEN = new OpaqueToken("Max Jokes");
 
 class Joke {
   public setup: string;
@@ -27,7 +29,34 @@ class Joke {
 }
 
 class JokeService {
-  //TODO
+  jokes: Joke[];
+
+  constructor(@Inject(MAX_JOKES_TOKEN) public maxJokes: number) {
+
+    this.jokes = [
+      new Joke("What did the cheese say when it looked in the mirror?", "Hello-me (Halloumi)"),
+      new Joke("What kind of cheese do you use to disguise a small horse?", "Mask-a-pony (Mascarpone)"),
+      new Joke("A kid threw a lump of cheddar at me", "I thought ‘That’s not very mature’"),
+    ];
+  }
+
+  addJoke(joke) {
+    // Remove one extra joke so we have room for the new one we are adding in.
+    if (this.jokes.length > (this.maxJokes + 1)) {
+      this.jokes.splice(this.maxJokes, this.jokes.length - (this.maxJokes + 1));
+    }
+
+    // Push new joke to the front
+    this.jokes.unshift(joke);
+  }
+
+  deleteJoke(joke) {
+    debugger;
+    let indexToDelete = this.jokes.indexOf(joke);
+    if (indexToDelete !== -1) {
+      this.jokes.splice(indexToDelete, 1);
+    }
+  }
 }
 
 
@@ -94,30 +123,12 @@ class JokeComponent {
 @Component({
   selector: 'joke-list',
   template: `
-<joke-form (jokeCreated)="addJoke($event)"></joke-form>
-<joke *ngFor="let j of jokes" [joke]="j" (jokeDeleted)="deleteJoke($event)"></joke>
+<joke-form (jokeCreated)="jokeService.addJoke($event)"></joke-form>
+<joke *ngFor="let j of jokeService.jokes" [joke]="j" (jokeDeleted)="jokeService.deleteJoke($event)"></joke>
   `
 })
 class JokeListComponent {
-  jokes: Joke[];
-
-  constructor() {
-    this.jokes = [
-      new Joke("What did the cheese say when it looked in the mirror?", "Hello-me (Halloumi)"),
-      new Joke("What kind of cheese do you use to disguise a small horse?", "Mask-a-pony (Mascarpone)"),
-      new Joke("A kid threw a lump of cheddar at me", "I thought ‘That’s not very mature’"),
-    ];
-  }
-
-  addJoke(joke) {
-    this.jokes.unshift(joke);
-  }
-
-  deleteJoke(joke) {
-    let indexToDelete = this.jokes.indexOf(joke);
-    if (indexToDelete !== -1) {
-      this.jokes.splice(indexToDelete,1);
-    }
+  constructor(private jokeService: JokeService) {
   }
 }
 
@@ -141,7 +152,8 @@ class AppComponent {
   ],
   bootstrap: [AppComponent],
   providers: [
-      //TODO: Add services and providers here...
+    JokeService,
+    {provide: MAX_JOKES_TOKEN, useValue: 3}
   ]
 })
 export class AppModule {
