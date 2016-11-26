@@ -71,7 +71,8 @@ class FormAppComponent {
       "email": this.email
     });
     this.form.valueChanges
-        // TODO: Perhaps this is a good place?
+        .debounceTime(1000)
+        .distinctUntilChanged()
         .filter(data => this.form.valid)
         .map(data => {
           data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, '');
