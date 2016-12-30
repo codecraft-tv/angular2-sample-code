@@ -359,7 +359,7 @@ const routes: Routes = [
     canActivate: [OnlyLoggedInUsersGuard, AlwaysAuthGuard],
     canActivateChild: [AlwaysAuthChildrenGuard],
     children: [
-      {path: '', redirectTo: 'tracks'},
+      {path: '', redirectTo: 'tracks', pathMatch: 'full'},
       {path: 'tracks', component: ArtistTrackListComponent},
       {path: 'albums', component: ArtistAlbumListComponent},
     ]

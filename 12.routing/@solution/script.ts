@@ -321,7 +321,7 @@ const routes: Routes = [
     path: 'artist/:artistId',
     component: ArtistComponent,
     children: [
-      {path: '', redirectTo: 'tracks'},
+      {path: '', redirectTo: 'tracks', pathMatch: 'full'},
       {path: 'tracks', component: ArtistTrackListComponent},
       {path: 'albums', component: ArtistAlbumListComponent},
       {path: 'videos', component: ArtistMusicVideoListComponent},
