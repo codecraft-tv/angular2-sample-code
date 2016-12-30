@@ -109,7 +109,6 @@ class JokeListComponent {
   }
 
   deleteJoke(joke) {
-    debugger;
     let indexToDelete = this.jokes.indexOf(joke);
     if (indexToDelete !== -1) {
       this.jokes.splice(indexToDelete, 1);
