@@ -1,4 +1,4 @@
-import {NgModule, Component, Injectable, Inject} from '@angular/core';
+import {NgModule, Component, Injectable, Inject, TypeDecorator} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
@@ -26,7 +26,7 @@ class OtherService {
 // }
 
 // This works because @Injectable automatically injects every parameter to the constructor as long as that parameter has a type
-@Injectable
+@Injectable()
 class SimpleService {
   otherService: OtherService;
 
@@ -47,7 +47,7 @@ class SimpleService {
 
 @Component({
   selector: 'simple',
-  templateUrl: `<p>Simple is as simple does</p>`,
+  template: `<p>Simple is as simple does</p>`,
 })
 class SimpleComponent {
   constructor(private simpleService: SimpleService) {
@@ -67,7 +67,7 @@ class AppComponent {
   imports: [BrowserModule],
   declarations: [AppComponent, SimpleComponent],
   bootstrap: [AppComponent],
-  providers: [SimpleService, OtherService]
+  providers: [OtherService, SimpleService]
 })
 class AppModule {
 

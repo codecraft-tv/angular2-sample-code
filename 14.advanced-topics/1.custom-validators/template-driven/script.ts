@@ -114,7 +114,7 @@ class EmailDomainValidator {
 		       [(ngModel)]="model.email"
 		       required
 		       pattern="[^ @]*@[^ @]*"
-		       [emailDomain]="'codecraft.tv'"
+		       emailDomain
 		       #email="ngModel">
 		<div class="form-control-feedback"
 		     *ngIf="email.errors && (email.dirty || email.touched)">

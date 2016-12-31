@@ -19,7 +19,7 @@ describe('Router: App', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes(routes)],
+      imports: [    RouterTestingModule.withRoutes(routes)],
       declarations: [
         HomeComponent,
         SearchComponent,
@@ -34,15 +34,25 @@ describe('Router: App', () => {
     router.initialNavigation();
   });
 
+  it('fakeAsync works', fakeAsync(() => {
+    let promise = new Promise((resolve) => {
+      setTimeout(resolve, 10)
+    });
+    let done = false;
+    promise.then(() => done = true);
+    tick(50);
+    expect(done).toBeTruthy();
+  }));
+
   it('navigate to "" redirects you to /home', fakeAsync(() => {
     router.navigate(['']);
-    tick();
+    tick(50);
     expect(location.path()).toBe('/home');
   }));
 
   it('navigate to "search" takes you to /search', fakeAsync(() => {
-    router.navigate(['search']);
-    tick();
+    router.navigate(['/search']);
+    tick(50);
     expect(location.path()).toBe('/search');
   }));
 });
