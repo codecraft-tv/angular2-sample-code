@@ -1,4 +1,4 @@
-export default function square(x) {
+export function square(x) {
   return Math.pow(x, 2)
 }
 

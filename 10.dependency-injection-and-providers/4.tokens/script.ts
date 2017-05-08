@@ -1,5 +1,5 @@
 import {ReflectiveInjector} from '@angular/core';
-import {OpaqueToken} from '@angular/core';
+import {InjectionToken} from '@angular/core';
 
 // String Token (Fail Case) Example
 {
@@ -24,14 +24,14 @@ import {OpaqueToken} from '@angular/core';
 
 // OpaqueToken
 {
-  console.log("OpaqueToken");
+  console.log("InjectionToken");
   class MandrillService {
   }
   class SendGridService {
   }
 
-  const MandrillServiceToken = new OpaqueToken("EmailService");
-  const SendGridServiceToken = new OpaqueToken("EmailService");
+  const MandrillServiceToken = new InjectionToken<string>("EmailService");
+  const SendGridServiceToken = new InjectionToken<string>("EmailService");
 
   let injector = ReflectiveInjector.resolveAndCreate([
     {provide: SendGridServiceToken, useClass: SendGridService},

@@ -19,11 +19,8 @@ class Person implements Human {
 }
 
 class Student extends Person {
-  course;
-
-  constructor(firstName, lastName, course) {
+  constructor(public firstName, public lastName, public course) {
     super(firstName, lastName);
-    this.course = course;
   }
 
   whoAreYou() {

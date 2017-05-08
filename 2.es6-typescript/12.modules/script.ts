@@ -1,3 +1,3 @@
-import square, {cow} from './utils';
-console.log(square(4));
-cow();
+import * as utils from './utils';
+console.log(utils.square(4));
+utils.cow();

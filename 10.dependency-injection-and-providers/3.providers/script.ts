@@ -67,7 +67,7 @@ import {OpaqueToken} from '@angular/core';
   console.log(emailService2); // GenericEmailService {}
   let emailService3 = injector.get(GenericEmailService);
   console.log(emailService3); // GenericEmailService {}
-  console.log(emailService1 === emailService2 === emailService3); // false
+  console.log(emailService1 === emailService2 &&  emailService2 === emailService3); // true
 }
 
 // useValue
