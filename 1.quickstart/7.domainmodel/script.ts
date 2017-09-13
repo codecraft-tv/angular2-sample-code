@@ -32,7 +32,7 @@ class Joke {
   `
 })
 class JokeListComponent {
-  jokes: Object[];
+  jokes: Joke[];
 
   constructor() {
     this.jokes = [
