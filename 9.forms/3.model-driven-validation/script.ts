@@ -34,7 +34,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
              required>
       <div class="form-control-feedback"
            *ngIf="firstName.errors && (firstName.dirty || firstName.touched)">
-        <p *ngIf="firstName.errors.required">Last Name is required</p>
+        <p *ngIf="firstName.errors.required">First Name is required</p>
       </div>
 
       <!--
