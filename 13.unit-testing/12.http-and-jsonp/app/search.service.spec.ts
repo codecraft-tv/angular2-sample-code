@@ -27,11 +27,6 @@ describe('Service: Search', () => {
           provide: Jsonp,
           useFactory: (backend, options) => new Jsonp(backend, options),
           deps: [MockBackend, BaseRequestOptions]
-        },
-        {
-          provide: Http,
-          useFactory: (backend, options) => new Http(backend, options),
-          deps: [MockBackend, BaseRequestOptions]
         }
       ]
     });
