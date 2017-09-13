@@ -80,11 +80,11 @@ export class CodeCraftForOfDirective {
   <h4 class="card-title">
     {{ data.setup }}
   </h4>
-  <template [ngIf]="!data.hide">
+  <ng-template [ngIf]="!data.hide">
     <p class="card-text">
     {{ data.punchline }}
   </p>  
-  </template>
+  </ng-template>
   <button class="btn btn-primary"
           (click)="data.toggle()">Tell Me
   </button>
@@ -98,11 +98,11 @@ class JokeComponent implements OnInit {
 @Component({
   selector: 'joke-list',
   template: `
-<template ngFor
+<ng-template ngFor
           let-j
           [ngForOf]="jokes">
   <joke [joke]="j"></joke>
-</template>
+</ng-template>
 `
 })
 class JokeListComponent {
