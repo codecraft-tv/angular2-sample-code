@@ -7,11 +7,17 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
   template: `<div class="card card-block">
   <h4 class="card-title">Currency</h4>
   <div class="card-text">
-    <p ngNonBindable>{{ 1234.56 | currency:'GBP' }}</p>
-    <p>{{ 1234.56 | currency:"GBP" }}</p>
+    <p ngNonBindable>{{ 1234.56 | currency:'CAD' }}</p>
+    <p>{{ 1234.56 | currency:"CAD" }}</p>
     
-    <p ngNonBindable>{{ 1234.56 | currency:'GBP':'true' }}</p>
-    <p>{{ 1234.56 | currency:"GBP":true }}</p>
+    <p ngNonBindable>{{ 1234.56 | currency:'CAD':'code' }}</p>
+    <p>{{ 1234.56 | currency:'CAD':'code'}}</p>
+    
+    <p ngNonBindable>{{ 1234.56 | currency:'CAD':'symbol' }}</p>
+    <p>{{ 1234.56 | currency:'CAD':'symbol'}}</p>
+    
+    <p ngNonBindable>{{ 1234.56 | currency:'CAD':'symbol-narrow' }}</p>
+    <p>{{ 1234.56 | currency:'CAD':'symbol-narrow'}}</p>        
   </div>
 </div>
 
