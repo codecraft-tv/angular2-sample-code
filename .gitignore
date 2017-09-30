@@ -40,3 +40,7 @@ jspm_packages
 
 # Idea
 .idea/
+.DS_Store
+
+2.es6-typescript/demo/
+
