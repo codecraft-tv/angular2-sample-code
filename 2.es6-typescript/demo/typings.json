@@ -1,0 +1,7 @@
+{
+  "dependencies": {},
+  "globalDependencies": {
+    "ionic": "registry:dt/ionic#0.0.0+20160907111202",
+    "jquery": "registry:dt/jquery#1.10.0+20160929162922"
+  }
+}
