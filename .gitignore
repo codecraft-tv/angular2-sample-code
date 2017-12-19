@@ -43,4 +43,5 @@ jspm_packages
 .DS_Store
 
 2.es6-typescript/demo/
+3.cli/@activity
 
