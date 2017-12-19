@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('activity App', () => {
+describe('codecraft App', () => {
   let page: AppPage;
 
   beforeEach(() => {
