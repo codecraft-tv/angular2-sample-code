@@ -45,3 +45,5 @@ jspm_packages
 2.es6-typescript/demo/
 3.cli/@activity
 
+.history/
+
