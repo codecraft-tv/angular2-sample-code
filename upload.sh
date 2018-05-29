@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd '1.quickstart' && plkall & cd ..
-cd '2.es6-typescript' && plkall & cd ..
+# cd '2.es6-typescript' && plkall & cd ..
 # '3.cli',
 # '4.components',
 # '5.built-in-directives',
