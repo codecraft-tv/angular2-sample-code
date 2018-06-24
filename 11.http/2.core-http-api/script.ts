@@ -1,13 +1,17 @@
-import {NgModule, Component} from '@angular/core';
-import {HttpModule, Http, URLSearchParams, Headers, RequestOptions} from '@angular/http';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-// import 'rxjs/add/operator/toPromise';
-import 'rxjs/Rx';
+import { NgModule, Component } from "@angular/core";
 
+import {
+  HttpClientModule,
+  HttpClient,
+  HttpHeaders,
+  HttpParams
+} from "@angular/common/http";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { toPromise } from "rxjs/operators";
 
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
  <div class="row">
   <div class="m-t-1">
@@ -36,95 +40,109 @@ import 'rxjs/Rx';
 class AppComponent {
   apiRoot: string = "http://httpbin.org";
 
-  constructor(private http: Http) {
-  }
+  constructor(private http: HttpClient) {}
 
   doGET() {
     console.log("GET");
     let url = `${this.apiRoot}/get`;
-    let search = new URLSearchParams();
-    search.set('foo', 'moo');
-    search.set('limit', 25);
-    this.http.get(url, {search}).subscribe(res => console.log(res.json()));
+    const httpOptions = {
+      params: new HttpParams().set("foo", "moo").set("limit", 25)
+    };
+    this.http.get(url, httpOptions).subscribe(res => console.log(res));
   }
 
   doPOST() {
     console.log("POST");
     let url = `${this.apiRoot}/post`;
-    let search = new URLSearchParams();
-    search.set('foo', 'moo');
-    search.set('limit', 25);
-    this.http.post(url, {moo: "foo", goo: "loo"}, {search}).subscribe(res => console.log(res.json()));
+    const httpOptions = {
+      params: new HttpParams().set("foo", "moo").set("limit", 25)
+    };
+    this.http
+      .post(url, { moo: "foo", goo: "loo" }, httpOptions)
+      .subscribe(res => console.log(res));
   }
 
   doPUT() {
     console.log("PUT");
     let url = `${this.apiRoot}/put`;
-    let search = new URLSearchParams();
-    search.set('foo', 'moo');
-    search.set('limit', 25);
-    this.http.put(url, {moo: "foo", goo: "loo"}, {search}).subscribe(res => console.log(res.json()));
+    const httpOptions = {
+      params: new HttpParams().set("foo", "moo").set("limit", 25)
+    };
+    this.http
+      .put(url, { moo: "foo", goo: "loo" }, httpOptions)
+      .subscribe(res => console.log(res));
   }
 
   doDELETE() {
     console.log("DELETE");
     let url = `${this.apiRoot}/delete`;
-    let search = new URLSearchParams();
-    search.set('foo', 'moo');
-    search.set('limit', 25);
-    this.http.delete(url, {search}).subscribe(res => console.log(res.json()));
+    const httpOptions = {
+      params: new HttpParams().set("foo", "moo").set("limit", 25)
+    };
+    this.http.delete(url, httpOptions).subscribe(res => console.log(res));
   }
 
   doGETAsPromise() {
     console.log("GET AS PROMISE");
     let url = `${this.apiRoot}/get`;
-    this.http.get(url)
-        .toPromise()
-        .then(res => console.log(res.json()));
+    this.http
+      .get(url)
+      .toPromise()
+      .then(res => console.log(res));
   }
 
   doGETAsPromiseError() {
     console.log("GET AS PROMISE ERROR");
     let url = `${this.apiRoot}/post`;
-    this.http.get(url)
-        .toPromise()
-        .then(
-            res => console.log(res.json()),
-            msg => console.error(`Error: ${msg.status} ${msg.statusText}`)
-        );
+    this.http
+      .get(url)
+      .toPromise()
+      .then(
+        res => console.log(res),
+        msg => console.error(`Error: ${msg.status} ${msg.statusText}`)
+      );
   }
 
   doGETAsObservableError() {
     console.log("GET AS OBSERVABLE ERROR");
     let url = `${this.apiRoot}/post`;
-    this.http.get(url).subscribe(
-        res => console.log(res.json()),
+    this.http
+      .get(url)
+      .subscribe(
+        res => console.log(res),
         msg => console.error(`Error: ${msg.status} ${msg.statusText}`)
-    );
+      );
   }
 
   doGETWithHeaders() {
     console.log("GET WITH HEADERS");
-    let headers: Headers = new Headers();
-    headers.append('Authorization', btoa('username:password'));
-    let opts: RequestOptions = new RequestOptions();
-    opts.headers = headers;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: btoa("username:password")
+      })
+    };
+
     let url = `${this.apiRoot}/get`;
-    this.http.get(url, opts).subscribe(
-        res => console.log(res.json()),
+
+    this.http
+      .get(url, httpOptions)
+      .subscribe(
+        res => console.log(res),
         msg => console.error(`Error: ${msg.status} ${msg.statusText}`)
-    );
+      );
   }
 }
 
-
 @NgModule({
-  imports: [BrowserModule, HttpModule],
+  imports: [
+    BrowserModule,
+    // import HttpClientModule after BrowserModule.
+    HttpClientModule
+  ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
