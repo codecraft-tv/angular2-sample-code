@@ -1,11 +1,11 @@
-import {NgModule, Component, OnDestroy} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import { Observable } from 'rxjs/Rx';
-
+import { NgModule, Component, OnDestroy } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { interval } from "rxjs";
+import { take, map } from "rxjs/operators";
 
 @Component({
-  selector: 'async-pipe',
+  selector: "async-pipe",
   template: `
  <div class="card card-block">
   <h4 class="card-title">AsyncPipe</h4>
@@ -31,20 +31,20 @@ class AsyncPipeComponent implements OnDestroy {
     this.promise = this.getPromise();
     this.observable = this.getObservable();
     this.subscribeObservable();
-
   }
 
   getObservable() {
-    return Observable
-        .interval(1000)
-        .take(10)
-        .map((v) => v * v);
+    return interval(1000).pipe(
+      take(10),
+      map(v => v * v)
+    );
   }
 
   // AsyncPipe subscribes to the observable automatically
   subscribeObservable() {
-    this.subscription = this.getObservable()
-        .subscribe((v) => this.observableData = v);
+    this.subscription = this.getObservable().subscribe(
+      v => (this.observableData = v)
+    );
   }
 
   getPromise() {
@@ -61,28 +61,21 @@ class AsyncPipeComponent implements OnDestroy {
   }
 }
 
-
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
   <async-pipe></async-pipe>
  `
 })
 class AppComponent {
   imageUrl: string = "";
-
 }
-
 
 @NgModule({
   imports: [BrowserModule],
-  declarations: [AppComponent,
-    AsyncPipeComponent
-  ],
-  bootstrap: [AppComponent],
+  declarations: [AppComponent, AsyncPipeComponent],
+  bootstrap: [AppComponent]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
