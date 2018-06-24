@@ -2,13 +2,15 @@ import {NgModule, Component, Injectable} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {JsonpModule, Jsonp, Response} from '@angular/http';
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 import {ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
-import {Observable} from 'rxjs';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+import {
+  map,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  tap
+} from "rxjs/operators";
 
 class SearchItem {
   constructor(public track: string,

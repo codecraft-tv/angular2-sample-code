@@ -4,8 +4,6 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
 
-import { Observable } from "rxjs";
-
 import {
   map,
   debounceTime,
@@ -24,11 +22,6 @@ class SearchItem {
   ) {}
 }
 
-interface SearchResponse {
-  results: SearchItem[];
-  resultCount: number;
-}
-
 @Injectable()
 export class SearchService {
   apiRoot: string = "https://itunes.apple.com/search";
@@ -36,7 +29,7 @@ export class SearchService {
 
   search(term: string): Observable<SearchItem[]> {
     let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
-    return this.http.get<SearchResponse>(apiURL).pipe(
+    return this.http.get(apiURL).pipe(
       map(res => {
         return res.results.map(item => {
           return new SearchItem(
