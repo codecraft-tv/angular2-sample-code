@@ -1,11 +1,17 @@
-import {NgModule, Component} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder} from "@angular/forms";
-import 'rxjs/Rx';
+import { NgModule, Component } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from "@angular/forms";
+import { map, filter } from "rxjs/operators";
 
 @Component({
-  selector: 'form-app',
+  selector: "form-app",
   template: `<form [formGroup]="form"
       (ngSubmit)="onSubmit()">
       
@@ -66,22 +72,24 @@ class FormAppComponent {
   /* Observable Solution */
   constructor(fb: FormBuilder) {
     this.form = fb.group({
-      "comment": this.comment,
-      "name": this.name,
-      "email": this.email
+      comment: this.comment,
+      name: this.name,
+      email: this.email
     });
     this.form.valueChanges
+      .pipe(
         // TODO: Perhaps this is a good place?
-        .filter(data => this.form.valid)
-        .map(data => {
-          data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, '');
-          return data
-        })
-        .map(data => {
+        filter(data => this.form.valid),
+        map(data => {
+          data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, "");
+          return data;
+        }),
+        map(data => {
           data.lastUpdateTS = new Date();
-          return data
+          return data;
         })
-        .subscribe( data => console.log(JSON.stringify(data)));
+      )
+      .subscribe(data => console.log(JSON.stringify(data)));
   }
 
   onSubmit() {
@@ -90,23 +98,18 @@ class FormAppComponent {
 }
 
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
 <form-app></form-app>
   `
 })
-class AppComponent {
-}
-
+class AppComponent {}
 
 @NgModule({
   imports: [BrowserModule, ReactiveFormsModule],
   declarations: [AppComponent, FormAppComponent],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
-
