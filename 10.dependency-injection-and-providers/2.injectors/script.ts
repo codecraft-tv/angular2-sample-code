@@ -1,64 +1,63 @@
-import {ReflectiveInjector} from '@angular/core';
-import {OpaqueToken} from '@angular/core';
-
+import { Injector } from "@angular/core";
 
 // Simple Injector Example
 {
   console.log("Simple Injector Example");
-  class MandrillService {
-  }
-  class SendGridService {
-  }
+  class MandrillService {}
+  class SendGridService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([
-    MandrillService,
-    SendGridService
+  let injector = Injector.create([
+    { provide: MandrillService, deps: [] },
+    { provide: SendGridService, deps: [] }
   ]);
   let emailService = injector.get(MandrillService);
   console.log(emailService);
+}
 
-  // Injector Caching Example
-  {
-    console.log("Injector Caching Example");
-    let emailService1 = injector.get(MandrillService);
-    let emailService2 = injector.get(MandrillService);
-    console.log(emailService1 === emailService2); // true
-  }
+// Injector Caching Example
+{
+  console.log("Injector Caching Example");
+  let emailService1 = injector.get(MandrillService);
+  let emailService2 = injector.get(MandrillService);
+  console.log(emailService1 === emailService2); // true
+}
 
-  // Injector Caching Caching State Sharing Example
-  {
-    console.log("Injector Caching Caching State Sharing Example");
-    let emailService1 = injector.get(MandrillService);
-    emailService1.foo = "moo";
+// Injector Caching Caching State Sharing Example
+{
+  console.log("Injector Caching Caching State Sharing Example");
+  let emailService1 = injector.get(MandrillService);
+  emailService1.foo = "moo";
 
-    let emailService2 = injector.get(MandrillService);
-    console.log(emailService2.foo); // moo
-  }
-
+  let emailService2 = injector.get(MandrillService);
+  console.log(emailService2.foo); // moo
 }
 
 //  Child Injector Forwards Request to Parent
 {
   console.log("Child Injector Forwards Request to Parent");
-  class EmailService {
-  }
+  class EmailService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([EmailService]);
-  let childInjector = injector.resolveAndCreateChild([]);
+  let parentInjector = Injector.create([{ provide: EmailService, deps: [] }]);
+  let childInjector = Injector.create([], parentInjector);
 
-  console.log(injector.get(EmailService) === childInjector.get(EmailService)); // true
+  console.log(
+    parentInjector.get(EmailService) === childInjector.get(EmailService)
+  ); // true
 }
 
 //  Child Injector Returns Different Instance
 {
   console.log("Child Injector Returns Different Instance");
-  class EmailService {
-  }
-  class PhoneService {
-  }
+  class EmailService {}
+  class PhoneService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([EmailService]);
-  let childInjector = injector.resolveAndCreateChild([EmailService]);
+  let parentInjector = Injector.create([{ provide: EmailService, deps: [] }]);
+  let childInjector = Injector.create(
+    [{ provide: EmailService, deps: [] }],
+    parentInjector
+  );
 
-  console.log(injector.get(EmailService) === childInjector.get(EmailService));
+  console.log(
+    parentInjector.get(EmailService) === childInjector.get(EmailService)
+  ); // false
 }
