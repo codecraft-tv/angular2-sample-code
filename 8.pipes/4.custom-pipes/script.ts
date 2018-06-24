@@ -1,14 +1,16 @@
-import {NgModule, Component, Pipe} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {Observable} from 'rxjs/Rx';
-
+import { NgModule, Component, Pipe } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 @Pipe({
   name: "default"
 })
 class DefaultPipe {
-  transform(value: string, fallback: string, forceHttps: boolean = false): string {
+  transform(
+    value: string,
+    fallback: string,
+    forceHttps: boolean = false
+  ): string {
     let image = "";
     if (value) {
       image = value;
@@ -27,7 +29,7 @@ class DefaultPipe {
 }
 
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
   <img [src]="imageUrl | default:'http://s3.amazonaws.com/uifaces/faces/twitter/sillyleo/128.jpg':true"/>
  `
@@ -36,16 +38,11 @@ class AppComponent {
   imageUrl: string = "";
 }
 
-
 @NgModule({
   imports: [BrowserModule],
-  declarations: [AppComponent,
-    DefaultPipe
-  ],
-  bootstrap: [AppComponent],
+  declarations: [AppComponent, DefaultPipe],
+  bootstrap: [AppComponent]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
