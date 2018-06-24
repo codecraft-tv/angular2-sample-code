@@ -1,16 +1,16 @@
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import {
-    Component,
-    NgModule,
-    Input,
-    Output,
-    EventEmitter,
-    Inject,
-    OpaqueToken
-} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+  Component,
+  NgModule,
+  Input,
+  Output,
+  EventEmitter,
+  Inject,
+  InjectionToken
+} from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
-const MAX_JOKES_TOKEN = new OpaqueToken("Max Jokes");
+const MAX_JOKES_TOKEN = new InjectionToken<number>("Max Jokes");
 
 class Joke {
   public setup: string;
@@ -32,17 +32,25 @@ class JokeService {
   jokes: Joke[];
 
   constructor(@Inject(MAX_JOKES_TOKEN) public maxJokes: number) {
-
     this.jokes = [
-      new Joke("What did the cheese say when it looked in the mirror?", "Hello-me (Halloumi)"),
-      new Joke("What kind of cheese do you use to disguise a small horse?", "Mask-a-pony (Mascarpone)"),
-      new Joke("A kid threw a lump of cheddar at me", "I thought ‘That’s not very mature’"),
+      new Joke(
+        "What did the cheese say when it looked in the mirror?",
+        "Hello-me (Halloumi)"
+      ),
+      new Joke(
+        "What kind of cheese do you use to disguise a small horse?",
+        "Mask-a-pony (Mascarpone)"
+      ),
+      new Joke(
+        "A kid threw a lump of cheddar at me",
+        "I thought ‘That’s not very mature’"
+      )
     ];
   }
 
   addJoke(joke) {
     // Remove one extra joke so we have room for the new one we are adding in.
-    if (this.jokes.length > (this.maxJokes + 1)) {
+    if (this.jokes.length > this.maxJokes + 1) {
       this.jokes.splice(this.maxJokes, this.jokes.length - (this.maxJokes + 1));
     }
 
@@ -59,9 +67,8 @@ class JokeService {
   }
 }
 
-
 @Component({
-  selector: 'joke-form',
+  selector: "joke-form",
   template: `
 <div class="card card-block">
   <h4 class="card-title">Create Joke</h4>
@@ -92,9 +99,8 @@ class JokeFormComponent {
   }
 }
 
-
 @Component({
-  selector: 'joke',
+  selector: "joke",
   template: `
 <div class="card card-block">
   <h4 class="card-title">
@@ -112,7 +118,7 @@ class JokeFormComponent {
   `
 })
 class JokeComponent {
-  @Input('joke') data: Joke;
+  @Input("joke") data: Joke;
   @Output() jokeDeleted = new EventEmitter<Joke>();
 
   deleteItem() {
@@ -121,26 +127,23 @@ class JokeComponent {
 }
 
 @Component({
-  selector: 'joke-list',
+  selector: "joke-list",
   template: `
 <joke-form (jokeCreated)="jokeService.addJoke($event)"></joke-form>
 <joke *ngFor="let j of jokeService.jokes" [joke]="j" (jokeDeleted)="jokeService.deleteJoke($event)"></joke>
   `
 })
 class JokeListComponent {
-  constructor(private jokeService: JokeService) {
-  }
+  constructor(private jokeService: JokeService) {}
 }
 
-
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
 <joke-list></joke-list>
   `
 })
-class AppComponent {
-}
+class AppComponent {}
 
 @NgModule({
   imports: [BrowserModule],
@@ -151,12 +154,8 @@ class AppComponent {
     JokeFormComponent
   ],
   bootstrap: [AppComponent],
-  providers: [
-    JokeService,
-    {provide: MAX_JOKES_TOKEN, useValue: 3}
-  ]
+  providers: [JokeService, { provide: MAX_JOKES_TOKEN, useValue: 3 }]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
