@@ -1,26 +1,30 @@
-import {NgModule, Component, Injectable} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {HttpModule, Http, Response} from '@angular/http';
-import 'rxjs/Rx';
+import { NgModule, Component, Injectable } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { HttpClientModule, HttpClient } from "@angular/common/http";
 
 class SearchItem {
-  constructor(public track: string,
-              public artist: string,
-              public link: string,
-              public thumbnail: string,
-              public artistId: string) {
-  }
+  constructor(
+    public track: string,
+    public artist: string,
+    public link: string,
+    public thumbnail: string,
+    public artistId: string
+  ) {}
 }
 
+interface SearchResponse {
+  results: SearchItem[];
+  resultCount: number;
+}
 
 @Injectable()
 export class SearchService {
-  apiRoot: string = 'https://itunes.apple.com/search';
+  apiRoot: string = "https://itunes.apple.com/search";
   results: SearchItem[];
   loading: boolean;
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.results = [];
     this.loading = false;
   }
@@ -28,34 +32,35 @@ export class SearchService {
   search(term: string) {
     let promise = new Promise((resolve, reject) => {
       let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
-      this.http.get(apiURL)
-          .toPromise()
-          .then(
-              res => { // Success
-                this.results = res.json().results.map(item => {
-                  return new SearchItem(
-                      item.trackName,
-                      item.artistName,
-                      item.trackViewUrl,
-                      item.artworkUrl30,
-                      item.artistId
-                  );
-                });
-                // this.results = res.json().results;
-                resolve();
-              },
-              msg => { // Error
-                reject(msg);
-              }
-          );
+      this.http
+        .get(apiURL)
+        .toPromise()
+        .then(
+          (res: SearchResponse) => {
+            // Success
+            this.results = res.results.map(item => {
+              return new SearchItem(
+                item.trackName,
+                item.artistName,
+                item.trackViewUrl,
+                item.artworkUrl30,
+                item.artistId
+              );
+            });
+            resolve();
+          },
+          msg => {
+            // Error
+            reject(msg);
+          }
+        );
     });
     return promise;
   }
 }
 
-
 @Component({
-  selector: 'app',
+  selector: "app",
   template: ` 
 <form class="form-inline">
 	<div class="form-group">
@@ -87,26 +92,20 @@ export class SearchService {
 class AppComponent {
   private loading: boolean = false;
 
-  constructor(private itunes: SearchService) {
-  }
+  constructor(private itunes: SearchService) {}
 
   doSearch(term: string) {
     this.loading = true;
-    this.itunes.search(term).then(_ => this.loading = false)
+    this.itunes.search(term).then(_ => (this.loading = false));
   }
 }
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    HttpModule,
-  ],
+  imports: [BrowserModule, HttpClientModule],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [SearchService]
 })
-class AppModule {
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
-
