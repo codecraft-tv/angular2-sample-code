@@ -1,44 +1,37 @@
-import {ReflectiveInjector} from '@angular/core';
-import {OpaqueToken} from '@angular/core';
-
+import { Injector } from "@angular/core";
 
 // Switching Dependencies Example
 {
   console.log("Switching Dependencies Example");
-  class MandrillService {
-  }
-  class SendGridService {
-  }
+  class MandrillService {}
+  class SendGridService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([
-    {provide: "EmailService", useClass: MandrillService}
+  let injector = Injector.create([
+    { provide: "EmailService", useClass: MandrillService, deps: [] }
   ]);
 
   let emailService = injector.get("EmailService");
   console.log(emailService); // new MandrillService()
+}
 
-  {
-    let injector = ReflectiveInjector.resolveAndCreate([
-      {provide: "EmailService", useClass: SendGridService}
-    ]);
+{
+  let injector = Injector.create([
+    { provide: "EmailService", useClass: SendGridService, deps: [] }
+  ]);
 
-    let emailService = injector.get("EmailService");
-    console.log(emailService); // new SendGridService()
-  }
+  let emailService = injector.get("EmailService");
+  console.log(emailService); // new SendGridService()
 }
 
 // useClass Provider
 {
   console.log("useClass");
-  class EmailService {
-  }
-  class MandrillService extends EmailService {
-  }
-  class SendGridService extends EmailService {
-  }
+  class EmailService {}
+  class MandrillService extends EmailService {}
+  class SendGridService extends EmailService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([
-    {provide: EmailService, useClass: SendGridService}
+  let injector = Injector.create([
+    { provide: EmailService, useClass: SendGridService, deps: [] }
   ]);
 
   let emailService = injector.get(EmailService);
@@ -48,17 +41,14 @@ import {OpaqueToken} from '@angular/core';
 // useExisting
 {
   console.log("useExisting");
-  class MandrillService {
-  }
-  class SendGridService {
-  }
-  class GenericEmailService {
-  }
+  class MandrillService {}
+  class SendGridService {}
+  class GenericEmailService {}
 
-  let injector = ReflectiveInjector.resolveAndCreate([
-    {provide: GenericEmailService, useClass: GenericEmailService},
-    {provide: MandrillService, useExisting: GenericEmailService},
-    {provide: SendGridService, useExisting: GenericEmailService}
+  let injector = Injector.create([
+    { provide: GenericEmailService, useClass: GenericEmailService, deps: [] },
+    { provide: MandrillService, useExisting: GenericEmailService, deps: [] },
+    { provide: SendGridService, useExisting: GenericEmailService, deps: [] }
   ]);
 
   let emailService1 = injector.get(SendGridService);
@@ -67,19 +57,22 @@ import {OpaqueToken} from '@angular/core';
   console.log(emailService2); // GenericEmailService {}
   let emailService3 = injector.get(GenericEmailService);
   console.log(emailService3); // GenericEmailService {}
-  console.log(emailService1 === emailService2 &&  emailService2 === emailService3); // true
+  console.log(
+    emailService1 === emailService2 && emailService2 === emailService3
+  ); // true
 }
 
 // useValue
 {
   console.log("useValue");
-  let injector = ReflectiveInjector.resolveAndCreate([
+  let injector = Injector.create([
     {
       provide: "Config",
       useValue: Object.freeze({
-        'APIKey': 'XYZ1234ABC',
-        'APISecret': '555-123-111'
+        APIKey: "XYZ1234ABC",
+        APISecret: "555-123-111"
       })
+      //NOTE: Don't have to provide : deps[] here
     }
   ]);
 
@@ -90,14 +83,12 @@ import {OpaqueToken} from '@angular/core';
 // useFactory
 {
   console.log("useFactory");
-  class MandrillService {
-  }
-  class SendGridService {
-  }
+  class MandrillService {}
+  class SendGridService {}
 
   const isProd = true;
 
-  let injector = ReflectiveInjector.resolveAndCreate([
+  let injector = Injector.create([
     {
       provide: "EmailService",
       useFactory: () => {
@@ -106,8 +97,9 @@ import {OpaqueToken} from '@angular/core';
         } else {
           return new SendGridService();
         }
-      }
-    },
+      },
+      deps: []
+    }
   ]);
 
   let emailService1 = injector.get("EmailService");
