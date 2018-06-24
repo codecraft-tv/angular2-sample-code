@@ -1,18 +1,11 @@
-import {
-    NgModule,
-    Component,
-    OnInit
-} from '@angular/core';
-import {
-    ReactiveFormsModule,
-    FormControl
-} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import 'rxjs/Rx';
+import { NgModule, Component, OnInit } from "@angular/core";
+import { ReactiveFormsModule, FormControl } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 
 @Component({
-  selector: 'reactive-model-form',
+  selector: "reactive-model-form",
   template: `<input type="search"
        class="form-control"
        placeholder="Please enter search term"
@@ -24,43 +17,33 @@ import 'rxjs/Rx';
 `
 })
 class ReactiveModelFormComponent implements OnInit {
-
   searchField: FormControl;
   searches: string[] = [];
 
   ngOnInit() {
     this.searchField = new FormControl();
     this.searchField.valueChanges
-        .debounceTime(400)
-        .distinctUntilChanged()
-        .subscribe(term => {
-          this.searches.push(term);
-        });
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged()
+      )
+      .subscribe(term => {
+        this.searches.push(term);
+      });
   }
 }
 
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `<reactive-model-form></reactive-model-form>`
 })
-class AppComponent {
-}
-
+class AppComponent {}
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule
-  ],
-  declarations: [
-    AppComponent,
-    ReactiveModelFormComponent
-  ],
-  bootstrap: [
-    AppComponent
-  ],
+  imports: [BrowserModule, ReactiveFormsModule],
+  declarations: [AppComponent, ReactiveModelFormComponent],
+  bootstrap: [AppComponent]
 })
-class AppModule {
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
