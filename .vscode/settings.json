@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.multiRootWorkspaceName": "Code"
+  "liveServer.settings.multiRootWorkspaceName": "Code",
+  "typescript.validate.enable": false
 }
