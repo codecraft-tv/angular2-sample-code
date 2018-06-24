@@ -1,6 +1,20 @@
-let obs = Rx.Observable
-    .interval(1000)
-    .take(3)
-    .map((v) => Date.now());
+const { interval, pipe } = rxjs;
+const { take, map } = rxjs.operators;
 
-obs.subscribe(value => console.log("Subscriber: " + value));
+interval(1000)
+  .pipe(
+    take(3),
+    map(v => Date.now())
+  )
+  .subscribe(value => console.log("Subscriber: " + value));
+
+/*
+  const middleware = pipe(
+    take(3),
+    map(v => Date.now())
+  );
+  
+  interval(1000)
+    .pipe(middleware)
+    .subscribe(value => console.log("Subscriber: " + value));
+    */
