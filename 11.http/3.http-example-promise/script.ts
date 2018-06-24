@@ -13,11 +13,6 @@ class SearchItem {
   ) {}
 }
 
-interface SearchResponse {
-  results: SearchItem[];
-  resultCount: number;
-}
-
 @Injectable()
 export class SearchService {
   apiRoot: string = "https://itunes.apple.com/search";
@@ -36,7 +31,7 @@ export class SearchService {
         .get(apiURL)
         .toPromise()
         .then(
-          (res: SearchResponse) => {
+          res => {
             // Success
             this.results = res.results.map(item => {
               return new SearchItem(
