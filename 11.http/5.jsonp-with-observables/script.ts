@@ -1,9 +1,13 @@
-import {NgModule, Component, Injectable} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {JsonpModule, Jsonp, Response} from '@angular/http';
-import { HttpClientModule, HttpClient } from "@angular/common/http";
-import {ReactiveFormsModule, FormControl, FormsModule} from '@angular/forms';
+import { NgModule, Component, Injectable } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+
+import {
+  HttpClientJsonpModule,
+  HttpClientModule,
+  HttpClient
+} from "@angular/common/http";
+import { ReactiveFormsModule, FormControl, FormsModule } from "@angular/forms";
 import {
   map,
   debounceTime,
@@ -13,40 +17,41 @@ import {
 } from "rxjs/operators";
 
 class SearchItem {
-  constructor(public track: string,
-              public artist: string,
-              public link: string,
-              public thumbnail: string,
-              public artistId: string) {
-  }
+  constructor(
+    public track: string,
+    public artist: string,
+    public link: string,
+    public thumbnail: string,
+    public artistId: string
+  ) {}
 }
 
 @Injectable()
 export class SearchService {
-  apiRoot: string = 'https://itunes.apple.com/search';
+  apiRoot: string = "https://itunes.apple.com/search";
 
-  constructor(private jsonp: Jsonp) {
-  }
+  constructor(private http: HttpClient) {}
 
   search(term: string) {
-    let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20&callback=JSONP_CALLBACK`;
-    return this.jsonp.request(apiURL)
-        .map(res => {
-          return res.json().results.map(item => {
-            return new SearchItem(
-                item.trackName,
-                item.artistName,
-                item.trackViewUrl,
-                item.artworkUrl30,
-                item.artistId
-            );
-          });
+    let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
+    return this.http.jsonp(apiURL, "callback").pipe(
+      map(res => {
+        return res.results.map(item => {
+          return new SearchItem(
+            item.trackName,
+            item.artistName,
+            item.trackViewUrl,
+            item.artworkUrl30,
+            item.artistId
+          );
         });
+      })
+    );
   }
 }
 
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
 <form class="form-inline">
   <div class="form-group">
@@ -77,17 +82,17 @@ class AppComponent {
   private results: Observable<SearchItem[]>;
   private searchField: FormControl;
 
-  constructor(private itunes: SearchService) {
-  }
+  constructor(private itunes: SearchService) {}
 
   ngOnInit() {
     this.searchField = new FormControl();
-    this.results = this.searchField.valueChanges
-        .debounceTime(400)
-        .distinctUntilChanged()
-        .do(_ => this.loading = true)
-        .switchMap(term => this.itunes.search(term))
-        .do(_ => this.loading = false)
+    this.results = this.searchField.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      tap(_ => (this.loading = true)),
+      switchMap(term => this.itunes.search(term)),
+      tap(_ => (this.loading = false))
+    );
   }
 }
 
@@ -96,13 +101,13 @@ class AppComponent {
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    JsonpModule
+    HttpClientModule,
+    HttpClientJsonpModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [SearchService]
 })
-class AppModule {
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
