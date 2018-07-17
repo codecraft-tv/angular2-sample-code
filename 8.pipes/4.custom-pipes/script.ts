@@ -3,7 +3,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 @Pipe({
-  name: "default"
+  name: "defaultImage"
 })
 class DefaultPipe {
   transform(
@@ -31,7 +31,7 @@ class DefaultPipe {
 @Component({
   selector: "app",
   template: `
-  <img [src]="imageUrl | default:'http://s3.amazonaws.com/uifaces/faces/twitter/sillyleo/128.jpg':true"/>
+  <img [src]="imageUrl | defaultImage:'http://s3.amazonaws.com/uifaces/faces/twitter/sillyleo/128.jpg':true"/>
  `
 })
 class AppComponent {

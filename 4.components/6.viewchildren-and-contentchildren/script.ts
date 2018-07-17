@@ -1,28 +1,28 @@
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import {
-    Component,
-    NgModule,
-    Input,
-    Output,
-    EventEmitter,
-    ViewEncapsulation,
-    SimpleChanges,
-    OnChanges,
-    OnInit,
-    DoCheck,
-    AfterContentInit,
-    AfterContentChecked,
-    AfterViewInit,
-    AfterViewChecked,
-    OnDestroy,
-    ViewChild,
-    ViewChildren,
-    ContentChild,
-    ContentChildren,
-    ElementRef,
-    QueryList
-} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+  Component,
+  NgModule,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation,
+  SimpleChanges,
+  OnChanges,
+  OnInit,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  OnDestroy,
+  ViewChild,
+  ViewChildren,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  QueryList
+} from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
 class Joke {
   public setup: string;
@@ -41,7 +41,7 @@ class Joke {
 }
 
 @Component({
-  selector: 'joke',
+  selector: "joke",
   template: `
 <div class="card card-block">
   <h4 class="card-title">
@@ -58,12 +58,11 @@ class Joke {
 `
 })
 class JokeComponent {
-
-  @Input('joke') data: Joke;
+  @Input("joke") data: Joke;
 }
 
 @Component({
-  selector: 'joke-list',
+  selector: "joke-list",
   template: `
 <h4 #header>View Jokes</h4>
 <joke *ngFor="let j of jokes" [joke]="j">
@@ -74,13 +73,16 @@ class JokeComponent {
 <ng-content></ng-content>
 `
 })
-class JokeListComponent implements OnInit,
-    AfterContentInit,
-    AfterViewInit {
-
+class JokeListComponent implements OnInit, AfterContentInit, AfterViewInit {
   jokes: Joke[] = [
-    new Joke("What did the cheese say when it looked in the mirror", "Hello-me (Halloumi)"),
-    new Joke("What kind of cheese do you use to disguise a small horse", "Mask-a-pony (Mascarpone)")
+    new Joke(
+      "What did the cheese say when it looked in the mirror",
+      "Hello-me (Halloumi)"
+    ),
+    new Joke(
+      "What kind of cheese do you use to disguise a small horse",
+      "Mask-a-pony (Mascarpone)"
+    )
   ];
 
   @ViewChild(JokeComponent) jokeViewChild: JokeComponent;
@@ -94,7 +96,9 @@ class JokeListComponent implements OnInit,
   }
 
   ngAfterContentInit() {
-    console.log(`ngAfterContentInit - jokeContentChild is ${this.jokeContentChild}`);
+    console.log(
+      `ngAfterContentInit - jokeContentChild is ${this.jokeContentChild}`
+    );
   }
 
   ngAfterViewInit() {
@@ -108,9 +112,8 @@ class JokeListComponent implements OnInit,
   }
 }
 
-
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
 <joke-list>
   <joke [joke]="joke">
@@ -121,19 +124,17 @@ class JokeListComponent implements OnInit,
 `
 })
 class AppComponent {
-  joke: Joke = new Joke("A kid threw a lump of cheddar at me", "I thought ‘That’s not very mature’");
+  joke: Joke = new Joke(
+    "A kid threw a lump of cheddar at me",
+    "I thought ‘That’s not very mature’"
+  );
 }
 
 @NgModule({
   imports: [BrowserModule],
-  declarations: [
-    AppComponent,
-    JokeComponent,
-    JokeListComponent
-  ],
+  declarations: [AppComponent, JokeComponent, JokeListComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);

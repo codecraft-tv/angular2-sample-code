@@ -8,12 +8,7 @@ import {
   Validators,
   FormBuilder
 } from "@angular/forms";
-import {
-  map,
-  filter,
-  debounceTime,
-  distinctUntilChanged
-} from "rxjs/operators";
+import { map, filter, debounceTime, distinct } from "rxjs/operators";
 
 @Component({
   selector: "form-app",
@@ -83,8 +78,8 @@ class FormAppComponent {
     });
     this.form.valueChanges
       .pipe(
-        debounceTime(1000),
-        distinctUntilChanged(),
+        debounceTime(300),
+        distinct(),
         filter(data => this.form.valid),
         map(data => {
           data.comment = data.comment.replace(/<(?:.|\n)*?>/gm, "");

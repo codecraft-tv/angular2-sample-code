@@ -13,8 +13,10 @@ import { take, map } from "rxjs/operators";
   <p class="card-text" ngNonBindable>{{ promise | async }}  </p>
   <p class="card-text">{{ promise | async }}  </p>
 
-  <p class="card-text" ngNonBindable>{{ observable | async }}  </p>
-  <p class="card-text">{{ observable | async }}</p>
+
+  <p class="card-text" ngNonBindable>{{ observable$ | async }}  </p>
+  <p class="card-text">{{ observable$ | async }}</p>
+  
  
   <p class="card-text" ngNonBindable>{{ observableData }}  </p>
   <p class="card-text">{{ observableData }}</p> 
@@ -23,13 +25,13 @@ import { take, map } from "rxjs/operators";
 })
 class AsyncPipeComponent implements OnDestroy {
   promise: Promise<string>;
-  observable: Observable<number>;
+  observable$: Observable<number>;
   subscription: Object = null;
   observableData: number;
 
   constructor() {
     this.promise = this.getPromise();
-    this.observable = this.getObservable();
+    this.observable$ = this.getObservable();
     this.subscribeObservable();
   }
 

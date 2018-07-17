@@ -1,10 +1,15 @@
-import {NgModule, Component, Injectable, Inject, TypeDecorator} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {
+  NgModule,
+  Component,
+  Injectable,
+  Inject,
+  TypeDecorator
+} from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 class OtherService {
-  constructor() {
-  };
+  constructor() {}
 }
 
 // This version doesn't work as Angular doesn't know it should be injecting otherService
@@ -32,7 +37,7 @@ class SimpleService {
 
   constructor(otherService: OtherService) {
     this.otherService = otherService;
-  };
+  }
 }
 
 // This DOESN'T work because the otherService parameter doesn't have a type
@@ -46,31 +51,25 @@ class SimpleService {
 // }
 
 @Component({
-  selector: 'simple',
-  template: `<p>Simple is as simple does</p>`,
+  selector: "simple",
+  template: `<p>Simple is as simple does</p>`
 })
 class SimpleComponent {
-  constructor(private simpleService: SimpleService) {
-  }
+  constructor(private simpleService: SimpleService) {}
 }
-
 
 @Component({
-  selector: 'app',
-  template: '<simple></simple>'
+  selector: "app",
+  template: "<simple></simple>"
 })
-class AppComponent {
-}
-
+class AppComponent {}
 
 @NgModule({
   imports: [BrowserModule],
   declarations: [AppComponent, SimpleComponent],
   bootstrap: [AppComponent],
-  providers: [OtherService, SimpleService]
+  providers: [OtherService, SimpleService, { provide: "Config", useValue: 3 }]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);

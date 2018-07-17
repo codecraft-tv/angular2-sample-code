@@ -11,7 +11,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
     {{ person.name }} ({{ person.age }})
   </li>
 </ul>
-`
+`b
 })
 class NgIfExampleComponent {
 

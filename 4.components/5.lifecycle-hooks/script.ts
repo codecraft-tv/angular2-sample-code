@@ -1,22 +1,22 @@
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import {
-    Component,
-    NgModule,
-    Input,
-    Output,
-    EventEmitter,
-    ViewEncapsulation,
-    SimpleChanges,
-    OnChanges,
-    OnInit,
-    DoCheck,
-    AfterContentInit,
-    AfterContentChecked,
-    AfterViewInit,
-    AfterViewChecked,
-    OnDestroy
-} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+  Component,
+  NgModule,
+  Input,
+  Output,
+  EventEmitter,
+  ViewEncapsulation,
+  SimpleChanges,
+  OnChanges,
+  OnInit,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  OnDestroy
+} from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
 class Joke {
   public setup: string;
@@ -35,7 +35,7 @@ class Joke {
 }
 
 @Component({
-  selector: 'joke',
+  selector: "joke",
   template: `
 <div class="card card-block">
   <h4 class="card-title">
@@ -51,7 +51,9 @@ class Joke {
 </div>
 `
 })
-class JokeComponent implements OnChanges,
+class JokeComponent
+  implements
+    OnChanges,
     OnInit,
     DoCheck,
     AfterContentInit,
@@ -59,7 +61,7 @@ class JokeComponent implements OnChanges,
     AfterViewInit,
     AfterViewChecked,
     OnDestroy {
-  @Input('joke') data: Joke;
+  @Input("joke") data: Joke;
 
   constructor() {
     console.log(`new - data is ${this.data}`);
@@ -80,7 +82,7 @@ Previous: ${changes[key].previousValue}`);
   }
 
   ngDoCheck() {
-    console.log("ngDoCheck")
+    console.log("ngDoCheck");
   }
 
   ngAfterContentInit() {
@@ -105,7 +107,7 @@ Previous: ${changes[key].previousValue}`);
 }
 
 @Component({
-  selector: 'joke-list',
+  selector: "joke-list",
   template: `
 <joke *ngFor="let j of jokes" [joke]="j">
   <span class="setup">{{ j.setup }}?</span>
@@ -126,34 +128,32 @@ class JokeListComponent {
   jokes: Joke[] = [];
 
   addJoke() {
-    this.jokes.unshift(new Joke("What did the cheese say when it looked in the mirror", "Hello-me (Halloumi)"));
+    this.jokes.unshift(
+      new Joke(
+        "What did the cheese say when it looked in the mirror",
+        "Hello-me (Halloumi)"
+      )
+    );
   }
 
   deleteJoke() {
-    this.jokes = []
+    this.jokes = [];
   }
 }
 
-
 @Component({
-  selector: 'app',
+  selector: "app",
   template: `
 <joke-list></joke-list>
 `
 })
-class AppComponent {
-}
+class AppComponent {}
 
 @NgModule({
   imports: [BrowserModule],
-  declarations: [
-    AppComponent,
-    JokeComponent,
-    JokeListComponent
-  ],
+  declarations: [AppComponent, JokeComponent, JokeListComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);

@@ -1,9 +1,9 @@
-import {NgModule, Component} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { NgModule, Component } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 @Component({
-  selector: 'ngstyle-example',
+  selector: "ngstyle-example",
   template: `<h4>NgStyle</h4>
 <ul *ngFor="let person of people">
   <li [ngStyle]="{'font-size.px':24}"
@@ -14,45 +14,43 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
  `
 })
 class NgStyleExampleComponent {
-
   getColor(country) {
     switch (country) {
-      case 'UK':
-        return 'green';
-      case 'USA':
-        return 'blue';
-      case 'HK':
-        return 'red';
+      case "UK":
+        return "green";
+      case "USA":
+        return "blue";
+      case "HK":
+        return "red";
     }
   }
 
   people: any[] = [
     {
-      "name": "Douglas  Pace",
-      "country": 'UK'
+      name: "Douglas  Pace",
+      country: "UK"
     },
     {
-      "name": "Mcleod  Mueller",
-      "country": 'USA'
+      name: "Mcleod  Mueller",
+      country: "USA"
     },
     {
-      "name": "Day  Meyers",
-      "country": 'HK'
+      name: "Day  Meyers",
+      country: "HK"
     },
     {
-      "name": "Aguirre  Ellis",
-      "country": 'UK'
+      name: "Aguirre  Ellis",
+      country: "UK"
     },
     {
-      "name": "Cook  Tyson",
-      "country": 'USA'
+      name: "Cook  Tyson",
+      country: "USA"
     }
   ];
 }
 
-
 @Component({
-  selector: 'ngclass-example',
+  selector: "ngclass-example",
   template: `<h4>NgClass</h4>
 <ul *ngFor="let person of people">
   <li [ngClass]="{
@@ -64,7 +62,7 @@ class NgStyleExampleComponent {
   </li>
 </ul>
 
-<!--
+
 <ul *ngFor="let person of people">
   <li [class.text-success]="person.country === 'UK'"
       [class.text-primary]="person.country === 'USA'"
@@ -72,62 +70,56 @@ class NgStyleExampleComponent {
     {{ person.name }} ({{ person.country }})
   </li>
 </ul>
--->
+
  `
 })
 class NgClassExampleComponent {
-
   people: any[] = [
     {
-      "name": "Douglas  Pace",
-      "age": 35,
-      "country": 'UK'
+      name: "Douglas  Pace",
+      age: 35,
+      country: "UK"
     },
     {
-      "name": "Mcleod  Mueller",
-      "age": 32,
-      "country": 'USA'
+      name: "Mcleod  Mueller",
+      age: 32,
+      country: "USA"
     },
     {
-      "name": "Day  Meyers",
-      "age": 21,
-      "country": 'HK'
+      name: "Day  Meyers",
+      age: 21,
+      country: "HK"
     },
     {
-      "name": "Aguirre  Ellis",
-      "age": 34,
-      "country": 'UK'
+      name: "Aguirre  Ellis",
+      age: 34,
+      country: "UK"
     },
     {
-      "name": "Cook  Tyson",
-      "age": 32,
-      "country": 'USA'
+      name: "Cook  Tyson",
+      age: 32,
+      country: "USA"
     }
   ];
 }
 
-
 @Component({
-  selector: 'directives-app',
+  selector: "directives-app",
   template: `
 <ngclass-example></ngclass-example>
 <ngstyle-example></ngstyle-example>`
 })
-class DirectivesAppComponent {
-}
-
+class DirectivesAppComponent {}
 
 @NgModule({
   imports: [BrowserModule],
   declarations: [
     NgClassExampleComponent,
     NgStyleExampleComponent,
-    DirectivesAppComponent],
+    DirectivesAppComponent
+  ],
   bootstrap: [DirectivesAppComponent]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
-

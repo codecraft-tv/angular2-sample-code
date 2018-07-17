@@ -1,36 +1,37 @@
-import { NgModule, Component, Injectable } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
+import { NgModule, Component, Injectable } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 class SimpleService {
   value: string;
 }
 
 @Component({
- selector: 'child',
- template: `
+  selector: "child",
+  template: `
  <div class="child"> 
    <p>Child</p>
    {{ service.value }}
 </div>
  `,
- styles: [`
-  .child {
-    background-color: #239CDE;
-    padding: 10px;
-  }
- `],
- // providers: [SimpleService]
+  styles: [
+    `
+      .child {
+        background-color: #239cde;
+        padding: 10px;
+      }
+    `
+  ]
+  // providers: [SimpleService]
 })
 class ChildComponent {
-  constructor(private service: SimpleService) { }
+  constructor(private service: SimpleService) {}
 }
 
 @Component({
- selector: 'parent',
- template: `
+  selector: "parent",
+  template: `
  <div class="parent"> 
    <p>Parent</p>
    <form novalidate>
@@ -44,24 +45,24 @@ class ChildComponent {
   <ng-content></ng-content>
 </div>
  `,
- styles: [`
-  .parent {
-    background-color: #D1E751;
-    padding: 10px;
-  }
- `],
- viewProviders: [SimpleService ]
+  styles: [
+    `
+      .parent {
+        background-color: #d1e751;
+        padding: 10px;
+      }
+    `
+  ],
+  viewProviders: [SimpleService]
   // providers: [SimpleService]
 })
 class ParentComponent {
-  constructor(private service: SimpleService) { }
+  constructor(private service: SimpleService) {}
 }
 
-
-
 @Component({
- selector: 'app',
- template: `
+  selector: "app",
+  template: `
  <div class="row">
 	<div class="col-xs-6">
 		<parent><child></child></parent>
@@ -72,19 +73,14 @@ class ParentComponent {
 </div>
  `
 })
-class AppComponent {
-}
-
+class AppComponent {}
 
 @NgModule({
-  imports:  [ BrowserModule, FormsModule ],
-  declarations:  [ AppComponent, ParentComponent, ChildComponent ],
-  bootstrap:  [ AppComponent ],
+  imports: [BrowserModule, FormsModule],
+  declarations: [AppComponent, ParentComponent, ChildComponent],
+  bootstrap: [AppComponent],
   providers: [SimpleService]
 })
-class AppModule {
-
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
-

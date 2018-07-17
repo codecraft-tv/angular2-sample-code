@@ -12,17 +12,14 @@ import { Injector } from "@angular/core";
   ]);
   let emailService = injector.get(MandrillService);
   console.log(emailService);
-}
 
-// Injector Caching Example
-{
   console.log("Injector Caching Example");
   let emailService1 = injector.get(MandrillService);
   let emailService2 = injector.get(MandrillService);
   console.log(emailService1 === emailService2); // true
 }
 
-// Injector Caching Caching State Sharing Example
+// // Injector Caching Caching State Sharing Example
 {
   console.log("Injector Caching Caching State Sharing Example");
   let emailService1 = injector.get(MandrillService);
