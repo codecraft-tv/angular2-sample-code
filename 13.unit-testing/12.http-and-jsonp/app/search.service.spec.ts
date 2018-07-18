@@ -1,71 +1,68 @@
 /* tslint:disable:no-unused-variable */
 import {
-    JsonpModule,
-    Jsonp,
-    BaseRequestOptions,
-    Response,
-    ResponseOptions,
-    Http
-} from "@angular/http";
-import {TestBed, fakeAsync, tick} from '@angular/core/testing';
-import {MockBackend} from "@angular/http/testing";
-import {SearchService} from './search.service';
+  HttpClientTestingModule,
+  HttpTestingController
+} from "@angular/common/http/testing";
+import { TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { HttpClient } from "@angular/common/http";
+import { SearchService } from "./search.service";
 
-describe('Service: Search', () => {
-
+describe("Service: Search", () => {
   let service: SearchService;
-  let backend: MockBackend;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [JsonpModule],
-      providers: [
-        SearchService,
-        MockBackend,
-        BaseRequestOptions,
-        {
-          provide: Jsonp,
-          useFactory: (backend, options) => new Jsonp(backend, options),
-          deps: [MockBackend, BaseRequestOptions]
-        }
-      ]
+      imports: [HttpClientTestingModule],
+      providers: [SearchService]
     });
-
-    // Get the MockBackend
-    backend = TestBed.get(MockBackend);
-
     // Returns a service with the MockBackend so we can test with dummy responses
     service = TestBed.get(SearchService);
-
+    // Inject the http service and test controller for each test
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
-  it('search should return SearchItems', fakeAsync(() => {
-    let response = {
-      "resultCount": 1,
-      "results": [
-        {
-          "artistId": 78500,
-          "artistName": "U2",
-          "trackName": "Beautiful Day",
-          "artworkUrl60": "image.jpg",
-        }]
-    };
+  afterEach(() => {
+    // After every test, assert that there are no more pending requests.
+    httpTestingController.verify();
+  });
 
-    // When the request subscribes for results on a connection, return a fake response
-    backend.connections.subscribe(connection => {
-      connection.mockRespond(new Response(<ResponseOptions>{
-        body: JSON.stringify(response)
-      }));
-    });
+  it(
+    "search should return SearchItems",
+    fakeAsync(() => {
+      let response = {
+        resultCount: 1,
+        results: [
+          {
+            artistId: 78500,
+            artistName: "U2",
+            trackName: "Beautiful Day",
+            artworkUrl60: "image.jpg"
+          }
+        ]
+      };
 
-    // Perform a request and make sure we get the response we expect
-    service.search("U2");
-    tick();
+      // Perform a request (this is fakeAsync to the responce won't be called until tick() is called)
+      service.search("U2");
 
-    expect(service.results.length).toBe(1);
-    expect(service.results[0].artist).toBe("U2");
-    expect(service.results[0].name).toBe("Beautiful Day");
-    expect(service.results[0].thumbnail).toBe("image.jpg");
-    expect(service.results[0].artistId).toBe(78500);
-  }));
+      // Expect a call to this URL
+      const req = httpTestingController.expectOne(
+        "https://itunes.apple.com/search?term=U2&media=music&limit=20"
+      );
+      // Assert that the request is a GET.
+      expect(req.request.method).toEqual("GET");
+      // Respond with this data when called
+      req.flush(response);
+
+      // Call tick whic actually processes te response
+      tick();
+
+      // Run our tests
+      expect(service.results.length).toBe(1);
+      expect(service.results[0].artist).toBe("U2");
+      expect(service.results[0].name).toBe("Beautiful Day");
+      expect(service.results[0].thumbnail).toBe("image.jpg");
+      expect(service.results[0].artistId).toBe(78500);
+    })
+  );
 });
