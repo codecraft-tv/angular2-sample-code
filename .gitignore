@@ -46,4 +46,5 @@ jspm_packages
 3.cli/@activity
 
 .history/
+.vscode/
 
